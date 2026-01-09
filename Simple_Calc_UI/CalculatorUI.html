@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.1/math.min.js"></script>
+    <script>
+        document.addEventListener("keydown", (event) => {
+        const key = event.key;
+        const validKeys = "0123456789+-*/().";
+        if (validKeys.includes(key)) {
+            document.getElementById("expression").value += key;
+        } else if (key === "Enter") {
+            math_calculate();
+        } else if (key === "Backspace") {
+            let input = document.getElementById("expression");
+            input.value = input.value.slice(0, -1);
+        }
+    });
+
+
+        // Append text to expression input
+        function appendToDisplay(value) {
+            const input = document.getElementById("expression");
+            input.value += value;
+        }
+
+        // Convert degrees to radians
+        function toRadians(degrees) {
+            return (degrees * Math.PI) / 180;
+        }
+
+        function math_calculate() {
+            const expressionField = document.getElementById("expression");
+            const expression = expressionField.value;
+
+            if (expression) {
+                try {
+                    const result = math.evaluate(expression);
+                    expressionField.value = result;
+                    addLog(expression + " = " + result);
+                } catch (e) {
+                    console.error("Invalid Expression");
+                    addLog(expression + " — ye bhi kuch hota hai? sahi se likh 🤨");
+                }
+            }
+        }
+
+        // For sin, cos, tan using degrees
+        function trig_calculate(func) {
+            const input = document.getElementById("expression");
+            let value = parseFloat(input.value);
+
+            if (isNaN(value)) {
+                addLog("NaN value entered for " + func);
+                input.value = "";
+                return;
+            }
+
+            let radians = toRadians(value);
+            let result;
+
+            switch (func) {
+                case 'sin':
+                    result = Math.sin(radians);
+                    break;
+                case 'cos':
+                    result = Math.cos(radians);
+                    break;
+                case 'tan':
+                    result = Math.tan(radians);
+                    break;
+            }
+
+            input.value = result.toFixed(6);
+            addLog(`${func}(${value}) = ${result.toFixed(6)}`);
+        }
+
+        
+
+        function initialize_app() {
+            document.getElementById("calculate").addEventListener("click", math_calculate);
+            document.getElementById("sin").addEventListener("click", () => trig_calculate('sin'));
+            document.getElementById("cos").addEventListener("click", () => trig_calculate('cos'));
+            document.getElementById("tan").addEventListener("click", () => trig_calculate('tan'));
+        }
+
+        window.onload = initialize_app;
+    </script>
+    <link rel="stylesheet" src="style.css"/>
+    
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" placeholder="0" id="expression">
+        <div class="buttons">
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+        </div>
+        <div class="buttons">
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('*')">*</button>
+        </div>
+        <div class="buttons">
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+        </div>
+        <div class="buttons">
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="operator" id="calculate">=</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="buttons">
+            <button class="trigobutton" id="cos">cos</button>
+            <button class="trigobutton" id="tan">tan</button>
+            <button class="trigobutton" id="sin">sin</button>
+        </div>
+    </div>
+
+    
+</body>
+<footer class="watermark">
+    © 2025 Pawan Kumar. All rights reserved.
+</footer>
+
+</html>

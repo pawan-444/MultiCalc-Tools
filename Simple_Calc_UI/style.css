@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #111, #333);
+}
+
+.calculator {
+  border: 2px solid rgba(35, 193, 201, 0.3);
+  padding: 25px 25px;
+  border-radius: 25px;
+  background: #1f1f1f;
+  box-shadow:
+    10px 10px 20px rgba(0, 0, 0, 0.7),
+    -10px -10px 20px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+input {
+  width: 320px;
+  border: none;
+  padding: 20px;
+  margin: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.4),
+              inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+  font-size: 40px;
+  color: white;
+  text-align: right;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  outline: none;
+}
+
+input::placeholder {
+  color: #bbb;
+}
+
+button {
+  border: none;
+  width: 65px;
+  height: 65px;
+  margin: 10px;
+  border-radius: 20px;
+  font-size: 26px;
+  background: #1e1e1e;
+  color: white;
+  box-shadow:
+    -4px -4px 8px rgba(255, 255, 255, 0.05),
+     4px 4px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trigobutton{
+    color: orange;
+}
+
+button.operator {
+  background-color: #ffa500;
+  color: black;
+  font-size: 28px;
+  box-shadow:
+    -2px -2px 6px rgba(255, 255, 255, 0.3),
+     2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  transform: scale(1.08);
+  box-shadow:
+    -3px -3px 6px rgba(255, 255, 255, 0.08),
+     3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+button:active {
+  transform: scale(0.95);
+  box-shadow:
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.watermark {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #aaa;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 999;
+}
+
+@media (prefers-color-scheme: dark) {
+    .watermark {
+        background-color: #111;
+        color: #666;
+        border-top: 1px solid #333;
+    }
+}
