@@ -1,262 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Advanced Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-
-        .calculator {
-            background-color: #333;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 300px;
-        }
-
-        #expression {
-            width: 100%;
-            height: 50px;
-            font-size: 24px;
-            text-align: right;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #fff;
-            color: #000;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        button {
-            width: 60px;
-            height: 60px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #666;
-            color: #fff;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #888;
-        }
-
-        .operator {
-            background-color: #ff9500;
-            color: #fff;
-        }
-
-        .operator:hover {
-            background-color: #e68900;
-        }
-
-        .trigobutton {
-            background-color: #4CAF50;
-            color: #fff;
-        }
-
-        .trigobutton:hover {
-            background-color: #45a049;
-        }
-
-        .clear {
-            background-color: #f44336;
-            color: #fff;
-        }
-
-        .clear:hover {
-            background-color: #d32f2f;
-        }
-
-        .history {
-            margin-top: 20px;
-            width: 300px;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .history h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-        }
-
-        .history p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .watermark {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.1/math.min.js"></script>
-    <script>
-        document.addEventListener("keydown", (event) => {
-            const key = event.key;
-            const validKeys = "0123456789+-*/().";
-            if (validKeys.includes(key)) {
-                document.getElementById("expression").value += key;
-            } else if (key === "Enter") {
-                math_calculate();
-            } else if (key === "Backspace") {
-                let input = document.getElementById("expression");
-                input.value = input.value.slice(0, -1);
-            } else if (key === "c" || key === "C") {
-                clearDisplay();
-            }
-        });
-
-        // Append text to expression input
-        function appendToDisplay(value) {
-            const input = document.getElementById("expression");
-            input.value += value;
-        }
-
-        // Clear the display
-        function clearDisplay() {
-            document.getElementById("expression").value = "";
-        }
-
-        // Convert degrees to radians
-        function toRadians(degrees) {
-            return (degrees * Math.PI) / 180;
-        }
-
-        function math_calculate() {
-            const expressionField = document.getElementById("expression");
-            const expression = expressionField.value;
-
-            if (expression) {
-                try {
-                    const result = math.evaluate(expression);
-                    expressionField.value = result;
-                    addLog(expression + " = " + result);
-                } catch (e) {
-                    console.error("Invalid Expression");
-                    addLog(expression + " — Invalid expression! sahi se likh 🤨");
-                    expressionField.value = "Error";
-                }
-            }
-        }
-
-        // For sin, cos, tan using degrees
-        function trig_calculate(func) {
-            const input = document.getElementById("expression");
-            let value = parseFloat(input.value);
-
-            if (isNaN(value)) {
-                addLog("NaN value entered for " + func);
-                input.value = "";
-                return;
-            }
-
-            let radians = toRadians(value);
-            let result;
-
-            switch (func) {
-                case 'sin':
-                    result = Math.sin(radians);
-                    break;
-                case 'cos':
-                    result = Math.cos(radians);
-                    break;
-                case 'tan':
-                    result = Math.tan(radians);
-                    break;
-            }
-
-            input.value = result.toFixed(6);
-            addLog(`${func}(${value}°) = ${result.toFixed(6)}`);
-        }
-
-        // Add to history log
-        function addLog(entry) {
-            const historyDiv = document.getElementById("history");
-            const p = document.createElement("p");
-            p.textContent = entry;
-            historyDiv.appendChild(p);
-            historyDiv.scrollTop = historyDiv.scrollHeight; // Auto-scroll to bottom
-        }
-
-        function initialize_app() {
-            document.getElementById("calculate").addEventListener("click", math_calculate);
-            document.getElementById("sin").addEventListener("click", () => trig_calculate('sin'));
-            document.getElementById("cos").addEventListener("click", () => trig_calculate('cos'));
-            document.getElementById("tan").addEventListener("click", () => trig_calculate('tan'));
-            document.getElementById("clear").addEventListener("click", clearDisplay);
-        }
-
-        window.onload = initialize_app;
-    </script>
+  <meta charset="UTF-8">
+  <title>Advanced Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.1/math.min.js"></script>
 </head>
+
 <body>
-    <div class="calculator">
-        <input type="text" placeholder="0" id="expression">
-        <div class="buttons">
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button class="operator" onclick="appendToDisplay('/')">/</button>
-            <button onclick="appendToDisplay('(')">(</button>
-        </div>
-        <div class="buttons">
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button class="operator" onclick="appendToDisplay('*')">*</button>
-            <button onclick="appendToDisplay(')')">)</button>
-        </div>
-        <div class="buttons">
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button class="operator" onclick="appendToDisplay('-')">-</button>
-            <button onclick="appendToDisplay('^')">^</button>
-        </div>
-        <div class="buttons">
-            <button onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            <button class="operator" id="calculate">=</button>
-            <button class="operator" onclick="appendToDisplay('+')">+</button>
-            <button class="clear" id="clear">C</button>
-        </div>
-        <div class="buttons">
-            <button class="trigobutton" id="sin">sin</button>
-            <button class="trigobutton" id="cos">cos</button>
-            <button class="trigobutton" id="tan">tan</button>
-            <button onclick="appendToDisplay('sqrt(')">√</button>
-        </div>
+  <div class="calculator">
+    <input type="text" id="expression" placeholder="0" readonly>
+
+    <div class="buttons">
+      <button class="operator" onclick="clearAll()">AC</button>
+      <button class="operator" onclick="backspace()">⌫</button>
+      <button class="operator" onclick="append('(')">(</button>
+      <button class="operator" onclick="append(')')">)</button>
     </div>
-    <div class="history">
-        <h3>Calculation History</h3>
+
+    <div class="buttons">
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('/')">÷</button>
     </div>
-    <footer class="watermark">
-        © 2025 Pawan Kumar. All rights reserved.
-    </footer>
+
+    <div class="buttons">
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button class="operator" onclick="append('*')">×</button>
+    </div>
+
+    <div class="buttons">
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button class="operator" onclick="append('-')">−</button>
+    </div>
+
+    <div class="buttons">
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button class="operator" onclick="calculate()">=</button>
+      <button class="operator" onclick="append('+')">+</button>
+    </div>
+
+    <div class="buttons">
+      <button class="trigobutton" onclick="trig('sin')">sin</button>
+      <button class="trigobutton" onclick="trig('cos')">cos</button>
+      <button class="trigobutton" onclick="trig('tan')">tan</button>
+    </div>
+  </div>
+
+  <footer class="watermark">
+    © 2025 Pawan Kumar. All rights reserved.
+  </footer>
+
+<script>
+  const input = document.getElementById("expression");
+
+  function append(value) {
+    if (input.value === "0") input.value = "";
+    input.value += value;
+  }
+
+  function clearAll() {
+    input.value = "0";
+  }
+
+  function backspace() {
+    input.value = input.value.slice(0, -1) || "0";
+  }
+
+  function calculate() {
+    try {
+      const result = math.evaluate(input.value);
+      input.value = result;
+    } catch {
+      input.value = "Error";
+    }
+  }
+
+  function trig(fn) {
+    try {
+      const degrees = parseFloat(input.value);
+      const radians = degrees * Math.PI / 180;
+      let result;
+
+      if (fn === "sin") result = Math.sin(radians);
+      if (fn === "cos") result = Math.cos(radians);
+      if (fn === "tan") result = Math.tan(radians);
+
+      input.value = result.toFixed(6);
+    } catch {
+      input.value = "Error";
+    }
+  }
+
+  document.addEventListener("keydown", e => {
+    if ("0123456789+-*/().".includes(e.key)) append(e.key);
+    if (e.key === "Enter") calculate();
+    if (e.key === "Backspace") backspace();
+    if (e.key === "Escape") clearAll();
+  });
+</script>
 </body>
 </html>
